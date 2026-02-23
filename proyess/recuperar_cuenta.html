@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Cuenta - El Aroma Perfecto</title>
+    <style>
+        :root {
+            --color-cafe-oscuro: #4b3621;
+            --color-cafe-claro: #A07855;
+            --color-crema: #F5F5DC;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            background: linear-gradient(rgba(245, 245, 220, 0.95), rgba(245, 245, 220, 0.95)), 
+                        url('image_9.png') no-repeat center center/cover;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .recovery-card {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(75, 54, 33, 0.2);
+            text-align: center;
+        }
+
+        .icon-header {
+            font-size: 50px;
+            color: var(--color-cafe-oscuro);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--color-cafe-oscuro);
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--color-cafe-oscuro);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn-send {
+            background-color: var(--color-cafe-oscuro);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-send:hover {
+            background-color: var(--color-cafe-claro);
+        }
+
+        .back-link {
+            margin-top: 25px;
+            display: block;
+            color: var(--color-cafe-claro);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Mensaje de éxito oculto */
+        #success-message {
+            display: none;
+            color: #2d5a27;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="recovery-card">
+        <div class="icon-header">🔑</div>
+        <h2>¿Olvidaste tu acceso?</h2>
+        <p>No te preocupes, hasta a los mejores baristas se les olvida dónde dejaron las llaves. Ingresa tu correo y te enviaremos un código para volver a entrar.</p>
+
+        <form id="recoveryForm" onsubmit="enviarEnlace(event)">
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" placeholder="tucorreo@ejemplo.com" required>
+            </div>
+            <button type="submit" class="btn-send">ENVIAR ENLACE DE RECUPERACIÓN</button>
+        </form>
+
+        <div id="success-message">
+            ¡Listo! Revisa tu bandeja de entrada. Te hemos enviado las instrucciones para recuperar tu aroma favorito.
+        </div>
+
+        <a href="javascript:void(0)" onclick="window.history.back()" class="back-link">← Volver al inicio de sesión</a>
+    </div>
+
+    <script>
+        function enviarEnlace(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            // Ocultar formulario y mostrar mensaje de éxito
+            document.getElementById('recoveryForm').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+            
+            console.log("Solicitud de recuperación enviada para: " + email);
+        }
+    </script>
+</body>
+</html>

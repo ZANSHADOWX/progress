@@ -1,0 +1,236 @@
+<div id="chat-container">
+    
+    <div id="chat-window" class="chat-window">
+        <div class="chat-header">
+            <div class="avatar-circle">☕</div>
+            <div class="header-info">
+                <h4>Barista Virtual</h4>
+                <span class="status-dot"></span> En línea
+            </div>
+            <button class="close-chat" onclick="toggleChat()">×</button>
+        </div>
+
+        <div class="chat-body" id="chat-body">
+            <div class="message bot-message">
+                <p>¡Hola! 👋 Bienvenido a El Aroma Perfecto. ¿Te apetece reservar una mesa o tienes alguna duda sobre nuestro menú?</p>
+                <span class="time">Justo ahora</span>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." onkeypress="handleEnter(event)">
+            <button class="btn-send" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <button class="chat-trigger" onclick="toggleChat()">
+        <span class="icon-chat">💬</span>
+    </button>
+
+</div>
+
+<style>
+    /* --- ESTILOS DEL CHAT --- */
+    #chat-container {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 9999; /* Por encima de todo */
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Botón Redondo Flotante */
+    .chat-trigger {
+        background: var(--color-cafe-oscuro, #4b3621); /* Usa tu variable o el color directo */
+        color: white;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        cursor: pointer;
+        font-size: 28px;
+        transition: transform 0.3s ease, background 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chat-trigger:hover {
+        transform: scale(1.1);
+        background: #A07855;
+    }
+
+    /* Ventana del Chat */
+    .chat-window {
+        display: none; /* Oculto al inicio */
+        width: 350px;
+        height: 450px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+        overflow: hidden;
+        flex-direction: column;
+        position: absolute;
+        bottom: 80px; /* Arriba del botón */
+        right: 0;
+        border: 1px solid #eee;
+        animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Encabezado */
+    .chat-header {
+        background: #4b3621;
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .avatar-circle {
+        background: white;
+        color: #4b3621;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .header-info h4 { margin: 0; font-size: 1rem; }
+    .header-info { flex-grow: 1; }
+    .status-dot {
+        display: inline-block;
+        width: 8px; height: 8px;
+        background: #2ecc71; /* Verde online */
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .close-chat {
+        background: none; border: none; color: white;
+        font-size: 24px; cursor: pointer;
+    }
+
+    /* Cuerpo (Mensajes) */
+    .chat-body {
+        flex-grow: 1;
+        padding: 15px;
+        background: #f9f9f9;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 15px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        position: relative;
+    }
+
+    .bot-message {
+        background: #F5F5DC; /* Crema */
+        color: #333;
+        align-self: flex-start;
+        border-bottom-left-radius: 2px;
+    }
+
+    .user-message {
+        background: #A07855; /* Café claro */
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+    }
+
+    .time {
+        display: block;
+        font-size: 0.7rem;
+        margin-top: 5px;
+        opacity: 0.7;
+        text-align: right;
+    }
+
+    /* Pie (Input) */
+    .chat-footer {
+        padding: 10px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+        background: white;
+    }
+
+    #chat-input {
+        flex-grow: 1;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 10px 15px;
+        outline: none;
+    }
+
+    .btn-send {
+        background: #4b3621;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    
+    .btn-send:hover { background: #A07855; }
+</style>
+
+<script>
+    function toggleChat() {
+        const chatWindow = document.getElementById('chat-window');
+        if (chatWindow.style.display === 'flex') {
+            chatWindow.style.display = 'none';
+        } else {
+            chatWindow.style.display = 'flex';
+        }
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const messageText = input.value.trim();
+        const chatBody = document.getElementById('chat-body');
+
+        if (messageText !== "") {
+            // 1. Agregar mensaje del usuario
+            const userMsg = document.createElement('div');
+            userMsg.classList.add('message', 'user-message');
+            userMsg.innerHTML = `<p>${messageText}</p><span class="time">Ahora</span>`;
+            chatBody.appendChild(userMsg);
+
+            // Limpiar input y bajar scroll
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // 2. Simular respuesta del bot (después de 1 segundo)
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.classList.add('message', 'bot-message');
+                botMsg.innerHTML = `<p>Gracias por escribirnos. Un barista humano te atenderá en breve. ☕</p><span class="time">Ahora</span>`;
+                chatBody.appendChild(botMsg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+    }
+</script>

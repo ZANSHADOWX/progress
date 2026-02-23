@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404 - El Aroma Perfecto</title>
+    <style>
+        /* --- VARIABLES Y ESTILOS BASE --- */
+        :root {
+            --color-cafe-oscuro: #4b3621;
+            --color-cafe-claro: #A07855;
+            --color-crema: #F5F5DC;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            margin: 0;
+            background-color: var(--color-crema);
+            color: #333;
+        }
+
+        /* --- ESTILOS DE LA PÁGINA DE ERROR 404 --- */
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Asegura que ocupe toda la pantalla */
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden; /* Para que las manchas no se salgan */
+        }
+
+        .error-code {
+            font-size: 100px;
+            font-weight: 800;
+            color: var(--color-cafe-oscuro);
+            margin: 0;
+            line-height: 1;
+            opacity: 0.15; /* Un poco más sutil */
+        }
+
+        /* --- NUEVOS ESTILOS PARA LA IMAGEN --- */
+        .error-img-container {
+            margin: 20px 0 30px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .error-img-container img {
+            max-width: 400px; /* Controla el tamaño máximo aquí */
+            width: 90%;       /* Se adapta en móviles */
+            height: auto;
+            border-radius: 15px; /* Bordes redondeados */
+            box-shadow: 0 15px 30px rgba(75, 54, 33, 0.2); /* Sombra elegante */
+            transform: rotate(-3deg); /* Un pequeño giro para dinamismo */
+        }
+
+        /* --- MENSAJES Y BOTONES --- */
+        .error-message {
+            max-width: 500px;
+            z-index: 2;
+        }
+
+        .error-message h2 {
+            color: var(--color-cafe-oscuro);
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .error-message p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .btn-regresar {
+            background-color: var(--color-cafe-claro);
+            color: white;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(160, 120, 85, 0.3);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-regresar:hover {
+            background-color: var(--color-cafe-oscuro);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(75, 54, 33, 0.4);
+        }
+
+        /* Decoración de fondo */
+        .mancha {
+            position: absolute;
+            background: rgba(160, 120, 85, 0.07);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <div class="mancha" style="width: 400px; height: 400px; top: -100px; left: -100px;"></div>
+        <div class="mancha" style="width: 300px; height: 300px; bottom: -50px; right: -50px;"></div>
+        
+        <p class="error-code">404</p>
+        
+        <div class="error-img-container">
+            <img src="café.png">
+        </div>
+        
+        <div class="error-message">
+            <h2>¡Ups! Se nos derramó el café</h2>
+            <p>La página que buscas no está disponible. Tal vez estamos limpiando el desastre o preparando una nueva receta. Vuelve al inicio y disfruta de nuestro menú.</p>
+            
+            <a href="cafeteria.html" class="btn-regresar">VOLVER AL INICIO</a>
+        </div>
+    </div>
+
+</body>
+</html>

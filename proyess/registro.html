@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Seguro - El Aroma Perfecto</title>
+    <style>
+        :root {
+            --color-cafe-oscuro: #4b3621;
+            --color-cafe-claro: #A07855;
+            --color-crema: #F5F5DC;
+            --color-blanco: #ffffff;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            background-color: var(--color-crema);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Fondo con tu imagen panorámica */
+            background: linear-gradient(rgba(245, 245, 220, 0.9), rgba(245, 245, 220, 0.9)), 
+                        url('image_9.png') no-repeat center center/cover;
+        }
+
+        .register-card {
+            background: var(--color-blanco);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(75, 54, 33, 0.2);
+            border: 1px solid #e0e0e0;
+        }
+
+        .register-header { text-align: center; margin-bottom: 30px; }
+        .register-header h1 { color: var(--color-cafe-oscuro); margin: 0; font-size: 2rem; }
+        .register-header p { color: #777; font-size: 0.9rem; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+
+        label { display: block; margin-bottom: 8px; color: var(--color-cafe-oscuro); font-weight: 600; font-size: 0.85rem; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; transition: border-color 0.3s ease; }
+        input:focus, select:focus { outline: none; border-color: var(--color-cafe-claro); }
+
+        /* --- ESTILOS DEL CAPTCHA --- */
+        .captcha-container {
+            background-color: #fcf8f5;
+            border: 1px dashed var(--color-cafe-claro);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .captcha-display {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--color-cafe-oscuro);
+            background: #eec;
+            padding: 8px 15px;
+            border-radius: 5px;
+            letter-spacing: 3px;
+            user-select: none; /* Evita que copien el texto */
+        }
+
+        .captcha-input {
+            width: 80px !important;
+            text-align: center;
+        }
+
+        .btn-refresh {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #666;
+            transition: transform 0.3s;
+        }
+        .btn-refresh:hover { transform: rotate(180deg); color: var(--color-cafe-oscuro); }
+
+        /* Botón de registro */
+        .btn-register {
+            background-color: var(--color-cafe-oscuro);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .btn-register:hover { background-color: var(--color-cafe-claro); transform: translateY(-2px); }
+
+        .login-link { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666; }
+        .login-link a { color: var(--color-cafe-claro); text-decoration: none; font-weight: bold; }
+        
+        .checkbox-group { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #555; }
+        .checkbox-group input { width: auto; margin: 0; }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .captcha-container { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body onload="generarCaptcha()"> <div class="register-card">
+        <div class="register-header">
+            <h1>Crea tu cuenta</h1>
+            <p>Completa el formulario y verifica que eres humano.</p>
+        </div>
+
+        <form id="registroForm" onsubmit="procesarRegistro(event)">
+            <div class="form-grid">
+                <div class="form-group"><label>Nombre</label><input type="text" id="nombre" required></div>
+                <div class="form-group"><label>Apellido</label><input type="text" id="apellido" required></div>
+                <div class="form-group full-width"><label>Email</label><input type="email" id="email" required></div>
+                
+                <div class="form-group full-width">
+                    <label>Tu Café Favorito</label>
+                    <select id="favorito">
+                        <option value="espresso">Espresso</option>
+                        <option value="latte">Latte</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group"><label>Contraseña</label><input type="password" id="pass" required></div>
+                <div class="form-group"><label>Confirmar</label><input type="password" id="confirmPass" required></div>
+
+                <div class="form-group full-width">
+                    <label>Seguridad: Resuelve la suma</label>
+                    <div class="captcha-container">
+                        <span id="captcha-operation" class="captcha-display">Loading...</span>
+                        <input type="number" id="captcha-user-input" class="captcha-input" placeholder="?" required>
+                        <button type="button" class="btn-refresh" onclick="generarCaptcha()" title="Nueva suma">🔄</button>
+                    </div>
+                </div>
+
+                <div class="form-group full-width checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">Acepto los términos y condiciones.</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-register">CREAR CUENTA</button>
+        </form>
+
+        <div class="login-link">
+            ¿Ya tienes cuenta? <a href="loginModal">Inicia sesión aquí</a>
+        </div>
+    </div>
+
+    <script>
+        // Variables para almacenar la suma correcta
+        let resultadoCorrecto = 0;
+
+        // Función para crear una suma aleatoria
+        function generarCaptcha() {
+            // Generamos dos números al azar entre 1 y 10
+            let num1 = Math.floor(Math.random() * 10) + 1;
+            let num2 = Math.floor(Math.random() * 10) + 1;
+            
+            // Guardamos el resultado correcto
+            resultadoCorrecto = num1 + num2;
+
+            // Mostramos la operación en pantalla
+            document.getElementById('captcha-operation').innerText = num1 + " + " + num2 + " = ";
+            
+            // Limpiamos el campo de entrada
+            document.getElementById('captcha-user-input').value = '';
+        }
+
+        function procesarRegistro(event) {
+            event.preventDefault(); // Evita que se recargue la página
+
+            // 1. Validar CAPTCHA
+            const respuestaUsuario = parseInt(document.getElementById('captcha-user-input').value);
+            
+            if (respuestaUsuario !== resultadoCorrecto) {
+                alert("❌ Error de seguridad: La suma es incorrecta. Por favor, inténtalo de nuevo.");
+                generarCaptcha(); // Generamos una nueva suma para evitar fuerza bruta
+                return; // Detenemos el proceso aquí
+            }
+
+            // 2. Validar Contraseñas
+            const pass = document.getElementById('pass').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+
+            if (pass !== confirmPass) {
+                alert("⚠️ Las contraseñas no coinciden.");
+                return;
+            }
+
+            // 3. Éxito
+            const nombre = document.getElementById('nombre').value;
+            alert("✅ ¡Verificación exitosa!\nBienvenido, " + nombre + ". Tu cuenta ha sido creada.");
+            window.location.href = "cafeteria.html";
+        }
+    </script>
+</body>
+</html>

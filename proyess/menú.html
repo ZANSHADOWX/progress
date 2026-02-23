@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Menú - El Aroma Perfecto</title>
+    <style>
+        /* --- VARIABLES Y BASE (Mismas que tu sitio principal) --- */
+        :root {
+            --color-cafe-oscuro: #4b3621;
+            --color-cafe-claro: #A07855;
+            --color-crema: #F5F5DC;
+            --color-blanco: #ffffff;
+            --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            margin: 0;
+            background-color: var(--color-crema);
+            color: #333;
+        }
+
+        /* --- ENCABEZADO SIMPLE (Para volver) --- */
+        header {
+            background: var(--color-cafe-oscuro);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
+        
+        .btn-volver {
+            text-decoration: none;
+            color: var(--color-crema);
+            border: 1px solid var(--color-crema);
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-volver:hover { background: var(--color-crema); color: var(--color-cafe-oscuro); }
+
+        /* --- HERO DEL MENÚ --- */
+        .menu-hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .menu-hero h1 { font-size: 3.5rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .menu-hero p { font-size: 1.2rem; margin-top: 10px; font-weight: 300; }
+
+        /* --- BARRA DE CATEGORÍAS (Navegación interna) --- */
+        .category-nav {
+            background: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 70px; /* Ajuste según la altura del header */
+            z-index: 900;
+        }
+
+        .category-nav a {
+            text-decoration: none;
+            color: #666;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .category-nav a:hover, .category-nav a.active {
+            color: var(--color-cafe-claro);
+        }
+
+        /* --- CONTENEDOR DEL MENÚ --- */
+        .menu-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--color-cafe-oscuro);
+            font-size: 2.5rem;
+            margin: 60px 0 30px 0;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 3px;
+            background: var(--color-cafe-claro);
+        }
+
+        /* --- GRILLA DE PRODUCTOS --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- TARJETA DE PRODUCTO --- */
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(75, 54, 33, 0.15);
+        }
+
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .card-img img { transform: scale(1.1); }
+
+        .price-tag {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: var(--color-cafe-claro);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .card-body h3 { margin: 0 0 10px 0; color: var(--color-cafe-oscuro); font-size: 1.4rem; }
+        
+        .card-body p { 
+            color: #666; 
+            font-size: 0.95rem; 
+            line-height: 1.5; 
+            margin-bottom: 20px; 
+            flex-grow: 1; 
+        }
+
+        .btn-order {
+            background: transparent;
+            border: 2px solid var(--color-cafe-oscuro);
+            color: var(--color-cafe-oscuro);
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-order:hover {
+            background: var(--color-cafe-oscuro);
+            color: white;
+        }
+
+        /* --- LISTA SIMPLE (Para items sin foto) --- */
+        .simple-list {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #ddd;
+            padding: 15px 0;
+            align-items: center;
+        }
+
+        .list-item:last-child { border-bottom: none; }
+        .item-name h4 { margin: 0; color: var(--color-cafe-oscuro); font-size: 1.1rem; }
+        .item-name span { display: block; font-size: 0.85rem; color: #888; margin-top: 5px; }
+        .item-price { font-weight: bold; color: var(--color-cafe-claro); font-size: 1.1rem; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">EL AROMA PERFECTO</div>
+        <a href="cafeteria.html" class="btn-volver">← Volver al Inicio</a>
+    </header>
+
+    <div class="menu-hero">
+        <div>
+            <h1>Nuestra Carta</h1>
+            <p>Sabores artesanales preparados con pasión</p>
+        </div>
+    </div>
+
+    <nav class="category-nav">
+        <a href="#calientes">Calientes</a>
+        <a href="#frios">Fríos & Refresh</a>
+        <a href="#postres">Bakery & Dulces</a>
+    </nav>
+
+    <div class="menu-container">
+        
+        <h2 id="calientes" class="section-title">Barista Caliente</h2>
+        <div class="menu-grid">
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Cappuccino">
+                    <span class="price-tag">$45</span>
+                </div>
+                <div class="card-body">
+                    <h3>Cappuccino Italiano</h3>
+                    <p>Espresso intenso cubierto con leche vaporizada y una capa perfecta de espuma cremosa.</p>
+                    <button class="btn-order">Ordenar</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Latte Art">
+                    <span class="price-tag">$50</span>
+                </div>
+                <div class="card-body">
+                    <h3>Latte Vainilla</h3>
+                    <p>Suave combinación de espresso y leche texturizada con un toque de jarabe de vainilla natural.</p>
+                    <button class="btn-order">Ordenar</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Espresso">
+                    <span class="price-tag">$35</span>
+                </div>
+                <div class="card-body">
+                    <h3>Espresso Doble</h3>
+                    <p>La esencia pura del café. Dos onzas de sabor intenso, cuerpo completo y notas a chocolate.</p>
+                    <button class="btn-order">Ordenar</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="frios" class="section-title">Fríos & Refresh</h2>
+        <div class="menu-grid">
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="OIP.webp" alt="Cold Brew">
+                    <span class="price-tag">$55</span>
+                </div>
+                <div class="card-body">
+                    <h3>Cold Brew Nitro</h3>
+                    <p>Café extraído en frío por 18 horas, servido con nitrógeno para una textura sedosa y cascada visual.</p>
+                    <button class="btn-order">Ordenar</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1577805947697-89e18249d767?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Frappe">
+                    <span class="price-tag">$60</span>
+                </div>
+                <div class="card-body">
+                    <h3>Frappé Moka</h3>
+                    <p>Mezcla helada de café, chocolate suizo, leche y hielo, coronado con crema batida.</p>
+                    <button class="btn-order">Ordenar</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="postres" class="section-title">Bakery & Acompañantes</h2>
+        <div class="simple-list">
+            <div class="list-item">
+                <div class="item-name">
+                    <h4>Croissant de Mantequilla</h4>
+                    <span>Horneado cada mañana, crujiente por fuera y suave por dentro.</span>
+                </div>
+                <div class="item-price">$30</div>
+            </div>
+            <div class="list-item">
+                <div class="item-name">
+                    <h4>Cheesecake de Frutos Rojos</h4>
+                    <span>Base de galleta crujiente con queso crema suave y mermelada casera.</span>
+                </div>
+                <div class="item-price">$65</div>
+            </div>
+            <div class="list-item">
+                <div class="item-name">
+                    <h4>Panino Caprese</h4>
+                    <span>Mozzarella fresca, tomate, pesto y albahaca en pan ciabatta.</span>
+                </div>
+                <div class="item-price">$75</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
